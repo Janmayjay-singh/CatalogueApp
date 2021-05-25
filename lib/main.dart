@@ -4,6 +4,7 @@ import 'package:myfirst/pages/login_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:myfirst/utils/routes.dart';
 import 'pages/home_page.dart';
+import 'widgets/drawer.dart';
 
 void main() {
   runApp(MyApp());
@@ -19,8 +20,9 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.deepPurple,
           fontFamily: GoogleFonts.lato().fontFamily,
         ),
+        debugShowCheckedModeBanner: false,
         darkTheme: ThemeData(brightness: Brightness.dark),
-        initialRoute: "/",
+        initialRoute: MyRoutes.homeRoute,
         routes: {
           "/": (context) => LoginPage(),
           MyRoutes.homeRoute: (context) => HomePage(),
