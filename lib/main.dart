@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:myfirst/pages/cart_page.dart';
 import 'package:myfirst/pages/home_page.dart';
 import 'package:myfirst/pages/login_page.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:myfirst/utils/routes.dart';
 import 'package:myfirst/widgets/themes.dart';
 import 'pages/home_page.dart';
-import 'widgets/drawer.dart';
 
 void main() {
   runApp(MyApp());
@@ -25,6 +24,7 @@ class MyApp extends StatelessWidget {
           "/": (context) => LoginPage(),
           MyRoutes.homeRoute: (context) => HomePage(),
           MyRoutes.loginRoute: (context) => LoginPage(),
+          MyRoutes.cartRoute: (context) => CartPage(),
         });
   }
 }

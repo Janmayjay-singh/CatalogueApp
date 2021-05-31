@@ -12,7 +12,9 @@ class HomeDetailPage extends StatelessWidget {
         super(key: key);
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+      ),
       backgroundColor: MyTheme.creamColor,
       bottomNavigationBar: Container(
         color: Colors.white,
@@ -30,10 +32,10 @@ class HomeDetailPage extends StatelessWidget {
                   shape: MaterialStateProperty.all(
                     StadiumBorder(),
                   )),
-              child: "Buy".text.make(),
-            ).wh(100, 50),
+              child: "Add to cart".text.make(),
+            ).wh(120, 50),
           ],
-        ).p32(),
+        ).p16(),
       ),
       body: SafeArea(
         bottom: false,
@@ -59,6 +61,10 @@ class HomeDetailPage extends StatelessWidget {
                           .make(),
                       catalog.desc.text.xl.make(),
                       10.heightBox,
+                      "No at justo erat ut sanctus et ipsum. Dolores diam justo ipsum diam labore labore at dolor. Amet nonumy sit et diam kasd aliquyam. Dolor ipsum eirmod clita erat eos."
+                          .text
+                          .make()
+                          .p16(),
                     ],
                   ).py64(),
                 ),
