@@ -1,6 +1,6 @@
 //import 'dart:html';
 import 'dart:ui';
-
+import 'package:velocity_x/velocity_x.dart';
 import 'package:flutter/material.dart';
 import 'package:myfirst/utils/routes.dart';
 
@@ -14,22 +14,22 @@ class _LoginPageState extends State<LoginPage> {
   bool changeButton = false;
   final _formKey = GlobalKey<FormState>();
   moveToHome(BuildContext context) async {
-    if(_formKey.currentState!.validate()){
-    setState(() {
-      changeButton = true;
-    });
-    await Future.delayed(Duration(seconds: 1));
-    await Navigator.pushNamed(context, MyRoutes.homeRoute);
-    setState(() {
-      changeButton = false;
-    });
+    if (_formKey.currentState!.validate()) {
+      setState(() {
+        changeButton = true;
+      });
+      await Future.delayed(Duration(seconds: 1));
+      await Navigator.pushNamed(context, MyRoutes.homeRoute);
+      setState(() {
+        changeButton = false;
+      });
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Material(
-        color: Colors.white,
+        color: context.canvasColor,
         child: SingleChildScrollView(
           child: Form(
             key: _formKey,
@@ -93,7 +93,7 @@ class _LoginPageState extends State<LoginPage> {
                       height: 40,
                     ),
                     Material(
-                      color: Colors.deepPurple,
+                      color: context.theme.buttonColor,
                       borderRadius:
                           BorderRadius.circular(changeButton ? 50 : 8),
                       child: InkWell(
