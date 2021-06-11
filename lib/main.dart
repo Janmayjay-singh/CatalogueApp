@@ -1,30 +1,55 @@
 import 'package:flutter/material.dart';
 import 'package:myfirst/pages/cart_page.dart';
-import 'package:myfirst/pages/home_page.dart';
+import 'package:myfirst/pages/home_detail_page.dart';
 import 'package:myfirst/pages/login_page.dart';
+import 'package:myfirst/pages/signup_page.dart';
 import 'package:myfirst/utils/routes.dart';
-import 'package:myfirst/widgets/themes.dart';
+import 'package:velocity_x/velocity_x.dart';
+import 'core/store.dart';
 import 'pages/home_page.dart';
+import 'widgets/themes.dart';
+import 'package:url_strategy/url_strategy.dart';
 
 void main() {
-  runApp(MyApp());
+  setPathUrlStrategy();
+  runApp(VxState(store: MyStore(), child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
-  //const MyApp({Key? key}) : super(key : key);
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        themeMode: ThemeMode.system,
-        theme: MyTheme.lightTheme(context),
-        debugShowCheckedModeBanner: false,
-        darkTheme: MyTheme.darkTheme(context),
-        initialRoute: MyRoutes.homeRoute,
-        routes: {
-          "/": (context) => LoginPage(),
-          MyRoutes.homeRoute: (context) => HomePage(),
-          MyRoutes.loginRoute: (context) => LoginPage(),
-          MyRoutes.cartRoute: (context) => CartPage(),
-        });
+    var vxNavigator = VxNavigator(routes: {
+      "/": (_, __) => MaterialPage(child: HomePage()),
+      MyRoutes.homeRoute: (_, __) => MaterialPage(child: HomePage()),
+      MyRoutes.homeDetailsRoute: (uri, _) {
+        final catalog = (VxState.store as MyStore)
+            .catalog
+            .getById(int.parse(uri.queryParameters["id"]));
+        return MaterialPage(
+            child: HomeDetailPage(
+          catalog: catalog,
+        ));
+      },
+      MyRoutes.loginRoute: (_, __) => MaterialPage(child: LoginPage()),
+      MyRoutes.signupRoute: (_, __) => MaterialPage(child: SignUpPage()),
+      MyRoutes.cartRoute: (_, __) => MaterialPage(child: CartPage()),
+    });
+    (VxState.store as MyStore).navigator = vxNavigator;
+
+    return MaterialApp.router(
+      themeMode: ThemeMode.system,
+      theme: MyTheme.lightTheme(context),
+      darkTheme: MyTheme.darkTheme(context),
+      debugShowCheckedModeBanner: false,
+      routeInformationParser: VxInformationParser(),
+      routerDelegate: vxNavigator,
+      // initialRoute: MyRoutes.loginRoute,
+      // routes: {
+      //   "/": (context) => LoginPage(),
+      //   MyRoutes.homeRoute: (context) => HomePage(),
+      //   MyRoutes.loginRoute: (context) => LoginPage(),
+      //   MyRoutes.cartRoute: (context) => CartPage(),
+      // },
+    );
   }
 }

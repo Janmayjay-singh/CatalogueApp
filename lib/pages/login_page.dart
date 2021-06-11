@@ -1,8 +1,8 @@
-//import 'dart:html';
-import 'dart:ui';
-import 'package:velocity_x/velocity_x.dart';
 import 'package:flutter/material.dart';
+import 'package:myfirst/core/store.dart';
 import 'package:myfirst/utils/routes.dart';
+import 'package:url_launcher/link.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -10,16 +10,23 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  String name = '';
+  String name = "";
   bool changeButton = false;
+
   final _formKey = GlobalKey<FormState>();
+
   moveToHome(BuildContext context) async {
-    if (_formKey.currentState!.validate()) {
+    if (_formKey.currentState.validate()) {
       setState(() {
         changeButton = true;
       });
       await Future.delayed(Duration(seconds: 1));
-      await Navigator.pushNamed(context, MyRoutes.homeRoute);
+      // await context.vxNav.push(Uri.parse(MyRoutes.homeRoute));
+      (VxState.store as MyStore)
+          .navigator
+          .routeManager
+          .push(Uri.parse(MyRoutes.homeRoute));
+
       setState(() {
         changeButton = false;
       });
@@ -40,7 +47,7 @@ class _LoginPageState extends State<LoginPage> {
                   fit: BoxFit.cover,
                 ),
                 SizedBox(
-                  height: 20,
+                  height: 20.0,
                 ),
                 Text(
                   "Welcome $name",
@@ -50,75 +57,104 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 SizedBox(
-                  height: 20,
+                  height: 20.0,
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(
-                      vertical: 16, horizontal: 32.0),
-                  child: Column(children: [
-                    TextFormField(
-                      decoration: InputDecoration(
-                        hintText: "Enter username",
-                        labelText: "Username",
-                      ),
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return "Username cannot be empty";
-                        }
+                      vertical: 16.0, horizontal: 32.0),
+                  child: Column(
+                    children: [
+                      TextFormField(
+                        decoration: InputDecoration(
+                          hintText: "Enter username",
+                          labelText: "Username",
+                        ),
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return "Username cannot be empty";
+                          }
 
-                        return null;
-                      },
-                      onChanged: (value) {
-                        name = value;
-                        setState(() {});
-                      },
-                    ),
-                    TextFormField(
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        hintText: "Enter password",
-                        labelText: "Password",
+                          return null;
+                        },
+                        onChanged: (value) {
+                          name = value;
+                          setState(() {});
+                        },
                       ),
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return "Password cannot be empty";
-                        } else if (value.length < 6) {
-                          return "Password length should be atleast 6";
-                        }
+                      TextFormField(
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          hintText: "Enter password",
+                          labelText: "Password",
+                        ),
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return "Password cannot be empty";
+                          } else if (value.length < 6) {
+                            return "Password length should be atleast 6";
+                          }
 
-                        return null;
-                      },
-                    ),
-                    SizedBox(
-                      height: 40,
-                    ),
-                    Material(
-                      color: context.theme.buttonColor,
-                      borderRadius:
-                          BorderRadius.circular(changeButton ? 50 : 8),
-                      child: InkWell(
-                        onTap: () => moveToHome(context),
-                        child: AnimatedContainer(
-                          duration: Duration(seconds: 1),
-                          width: changeButton ? 50 : 150,
-                          height: 50,
-                          alignment: Alignment.center,
-                          child: changeButton
-                              ? Icon(
-                                  Icons.done,
-                                  color: Colors.white,
-                                )
-                              : Text(
-                                  "Login",
-                                  style: TextStyle(
+                          return null;
+                        },
+                      ),
+                      SizedBox(
+                        height: 40.0,
+                      ),
+                      Material(
+                        color: context.theme.buttonColor,
+                        borderRadius:
+                            BorderRadius.circular(changeButton ? 50 : 8),
+                        child: InkWell(
+                          onTap: () => moveToHome(context),
+                          child: AnimatedContainer(
+                            duration: Duration(seconds: 1),
+                            width: changeButton ? 50 : 150,
+                            height: 50,
+                            alignment: Alignment.center,
+                            child: changeButton
+                                ? Icon(Icons.done, color: Colors.white)
+                                : Text(
+                                    "Login",
+                                    style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 18),
-                                ),
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                          ),
                         ),
                       ),
-                    ),
-                  ]),
+                      SizedBox(
+                        height: 20.0,
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          context.vxNav.push(Uri.parse(MyRoutes.signupRoute));
+                        },
+                        style: ButtonStyle(
+                          foregroundColor: MaterialStateProperty.all(
+                            context.accentColor,
+                          ),
+                        ),
+                        child: Text("Sign Up").text.headline6(context).make(),
+                      ),
+                      Link(
+                          // uri: Uri.parse("https://codepur.dev"),
+                          uri: Uri.parse(MyRoutes.cartRoute),
+                          target: LinkTarget.blank,
+                          builder: (context, followLink) {
+                            return TextButton(
+                                onPressed: followLink,
+                                style: ButtonStyle(
+                                    foregroundColor: MaterialStateProperty.all(
+                                        context.accentColor)),
+                                child: Text("Go to codepur"));
+                          }),
+                      SizedBox(
+                        height: 20.0,
+                      ),
+                    ],
+                  ),
                 )
               ],
             ),
