@@ -1,10 +1,12 @@
 //import 'dart:js';
 
 import 'package:flutter/material.dart';
+import 'package:myfirst/models/cart.dart';
 import 'package:myfirst/models/catalog.dart';
 import 'package:myfirst/pages/home_detail_page.dart';
 //import 'package:myfirst/widgets/themes.dart';
 import 'package:velocity_x/velocity_x.dart';
+import 'add_to_cart.dart';
 import 'catalog_image.dart';
 
 class CatalogList extends StatelessWidget {
@@ -59,17 +61,7 @@ class CatalogItem extends StatelessWidget {
                 buttonPadding: EdgeInsets.zero,
                 children: [
                   "\$${catalog.price}".text.bold.xl.make(),
-                  ElevatedButton(
-                    onPressed: () {},
-                    style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(
-                          context.theme.buttonColor,
-                        ),
-                        shape: MaterialStateProperty.all(
-                          StadiumBorder(),
-                        )),
-                    child: "Add to cart".text.make(),
-                  )
+                  Addtocart(catalog: catalog)
                 ],
               ).pOnly(right: 8.0),
             ],
